@@ -35,11 +35,23 @@ class Cupcake(db.Model):
     )
 
     image_url = db.Column(
-        db.String(500), #ask 
+        db.String(500), #ask
         nullable=False,
         unique=False,
         default=IMG_DEFAULT
     )
+
+
+    def serialize(self):
+        """Serialize to dictionary."""
+
+        return {
+            "id": self.id,
+            "flavor": self.flavor,
+            "size": self.size,
+            "rating": self.rating,
+            "image_url": self.image_url
+        }
 
 
 def connect_db(app):
