@@ -56,3 +56,37 @@ def add_cupcake():
 
     return (jsonify(cupcake=serialized), 201)
 
+
+@app.patch('/api/cupcakes/<int:cupcake_id>')
+def edit_cupcake(cupcake_id):
+    '''Respond with JSON of the newly-updated cupcake
+
+      Like this: {cupcake: {id, flavor, size, rating, image_url}}.'''
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    try:
+        cupcake.flavor = request.json.get('flavor')
+    except KeyError:
+        db.session.rollback()
+
+        try:
+            cupcake.size = request.json.get('size')
+        except KeyError:
+            db.session.rollback()
+
+            try:
+                cupcake.rating = request.json.get('rating')
+            except KeyError:
+                db.session.rollback()
+
+                try:
+                    cupcake.image_url = request.json.get('image_url')
+                except KeyError:
+                    db.session.rollback()
+
+                    db.session.commit()
+                    serialized = cupcake.serialize()
+
+                    return (jsonify(cupcake=serialized), 201)
+
