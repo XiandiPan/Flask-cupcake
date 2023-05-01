@@ -65,30 +65,18 @@ def edit_cupcake(cupcake_id):
 
     cupcake = Cupcake.query.get_or_404(cupcake_id)
 
-    try:
-        cupcake.flavor = request.json.get('flavor')
-    except KeyError:
-        db.session.rollback()
+    cupcake.flavor = request.json.get('flavor', cupcake.flavor)
+    cupcake.size = request.json.get('size', cupcake.size)
+    cupcake.rating = request.json.get('rating', cupcake.rating)
+    cupcake.image_url = request.json.get('image_url', cupcake.image_url)
 
-        try:
-            cupcake.size = request.json.get('size')
-        except KeyError:
-            db.session.rollback()
 
-            try:
-                cupcake.rating = request.json.get('rating')
-            except KeyError:
-                db.session.rollback()
+    db.session.commit()
+    serialized = cupcake.serialize()
 
-                try:
-                    cupcake.image_url = request.json.get('image_url')
-                except KeyError:
-                    db.session.rollback()
+    return (jsonify(cupcake=serialized), 201)
 
-                    db.session.commit()
-                    serialized = cupcake.serialize()
 
-                    return (jsonify(cupcake=serialized), 201)
 @app.delete('/api/cupcakes/<int:cupcake_id>')
 def deletes_cupcake(cupcake_id):
     """deletes cupcake or return 404 if the cupcake cannot be found
