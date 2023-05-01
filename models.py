@@ -24,8 +24,7 @@ class Cupcake(db.Model):
 
     size = db.Column(
         db.String(15),
-        nullable=False,
-        unique=True,
+        nullable=False
     )
 
     rating = db.Column(
@@ -40,6 +39,7 @@ class Cupcake(db.Model):
         unique=False,
         default=IMG_DEFAULT
     )
+
 
 
     def serialize(self):

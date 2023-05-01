@@ -9,8 +9,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
-<<<<<<< HEAD
-=======
 
 @app.get('/api/cupcakes')
 def show_all_cupcake_data():
@@ -26,7 +24,7 @@ def show_all_cupcake_data():
     return jsonify(cupcakes=serialized)
 
 
-@app.get('/api/cupcakes/<cupcake_id>') #QUESTION: why no int?
+@app.get('/api/cupcakes/<int:cupcake_id>') #QUESTION: why no int?
 def get_cupcake_id(cupcake_id):
     '''returns data about a single cupcake'''
 
@@ -38,10 +36,10 @@ def get_cupcake_id(cupcake_id):
 
 @app.post('/api/cupcakes')
 def add_cupcake():
-    '''returns all cupcake data in JSON format
+    '''returns new cupcake data in JSON format
 
     returns JSON:
-    {cupcakes: [{id, flavor, size, rating, image_url}, ...]}
+    {cupcake: [{id, flavor, size, rating, image_url}, ...]}
     '''
 
     flavor = request.json['flavor']
@@ -57,4 +55,4 @@ def add_cupcake():
     serialized = new_cupcake.serialize()
 
     return (jsonify(cupcake=serialized), 201)
->>>>>>> 1a2616cce8c1daf8b00fa0b043d81c5c66a15dbd
+
