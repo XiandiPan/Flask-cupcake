@@ -74,7 +74,7 @@ def edit_cupcake(cupcake_id):
     db.session.commit()
     serialized = cupcake.serialize()
 
-    return (jsonify(cupcake=serialized), 201)
+    return (jsonify(cupcake=serialized), 200)
 
 
 @app.delete('/api/cupcakes/<int:cupcake_id>')
@@ -82,7 +82,7 @@ def deletes_cupcake(cupcake_id):
     """deletes cupcake or return 404 if the cupcake cannot be found
 
 
-    respond with JSON like: {deleted: [cupcake-id]}
+    respond with JSON like: {deleted: [cupcake_id]}
     """
 
     cupcake = Cupcake.query.get_or_404(cupcake_id)
@@ -93,7 +93,7 @@ def deletes_cupcake(cupcake_id):
     db.session.commit()
 
     response = {'deleted': [cupcake_id]}
-    print(response)
+
 
 
     return jsonify(response)
